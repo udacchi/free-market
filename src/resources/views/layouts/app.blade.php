@@ -13,11 +13,9 @@
 <body>
   <div class="app">
     <header class="header">
-      <div class="header__inner">
-        <a href="/" class="header__logo">
-          <img src="{{ asset('images/logo.svg') }}" alt="COACHTECH" width="370" height="36">
-        </a>
-      </div>
+      <a href="/" class="header__logo">
+        <img src="{{ asset('images/logo.svg') }}" alt="COACHTECH" width="370" height="36">
+      </a>
       @yield('search')
       @yield('link')
     </header>
