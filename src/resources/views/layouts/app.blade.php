@@ -18,6 +18,7 @@
       </a>
       @yield('search')
       @yield('link')
+      @yield('submit')
     </header>
     <div class="content">
       @yield('content')
