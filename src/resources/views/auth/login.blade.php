@@ -8,11 +8,11 @@
 <div class="login-form">
   <div class="login-form__inner">
     <h2 class="login-form__heading content__heading">ログイン</h2>
-    <form class="login-form__form" action="/login" method="post">
+    <form class="login-form__form" action="{{ route('login') }}" method="post">
       @csrf
       <div class="login-form__group">
         <label class="login-form__label" for="email">メールアドレス</label>
-        <input class="login-form__input" type="email" name="email" id="email">
+        <input class="login-form__input" type="email" name="email" id="email" >
         <p class="login-form__error-message">
           @error('email')
           {{ $message }}

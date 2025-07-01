@@ -91,3 +91,15 @@
     width: 60vw;
   }
 }
+
+.login-form__error-message {
+  color: red;
+  font-size: 14px;
+  margin-top: 4px;
+}
+
+.login-form__error-message {
+  color: #FF5555;
+  font-size: 14px;
+  margin-top: 4px;
+}
