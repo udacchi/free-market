@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
 use App\Http\Requests\RegisterRequest;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\URL;
 
 class CreateNewUser implements CreatesNewUsers
 {
@@ -22,11 +24,17 @@ class CreateNewUser implements CreatesNewUsers
     {
         Validator::make($input, (new RegisterRequest())->rules())->validate();
 
-        return User::create([
+        $user = User::create([
             'name' => $input['name'] ?? '',
             'email' => $input['email'],
             'password' => Hash::make($input['password']),
         ]);
+
+        Auth::login($user);
+
+        redirect(URL::to('/mypage/profile'))->send();
+
+        return $user;
     }
     protected function passwordRules()
     {

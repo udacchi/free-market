@@ -11,5 +11,4 @@ Route::get('/register', function () {
     return view('auth.register');
 })->name('register');
 
-Route::get('/', [AuthController::class, 'index']);
-Route::get('/mypage/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+Route::get('/mypage/profile', [ProfileController::class, 'edit'])->name('mypage.profile.edit');
