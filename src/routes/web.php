@@ -10,5 +10,9 @@ Route::get('/login', function () {
 Route::get('/register', function () {
     return view('auth.register');
 })->name('register');
+Route::get('/mypage', function () {
+    return view('mypage');
+})->middleware('authenticatedonly');
+
 
 Route::get('/mypage/profile', [ProfileController::class, 'edit'])->name('mypage.profile.edit');
