@@ -19,7 +19,6 @@
   <form id="logout-form" action="/logout" method="POST" style="display: none;">
     @csrf
   </form>
-  <a class="header__link" href="/logout">ログアウト</a>
   <a class="header__link" href="/mypage">マイページ</a>
   <a class="header__submit-button" href="/sell">出品</a>
 </div>
