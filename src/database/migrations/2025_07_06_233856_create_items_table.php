@@ -16,8 +16,10 @@ return new class extends Migration
             $table->string('name');
             $table->integer('price');
             $table->text('description')->nullable();
-            $table->string('image');
-            $table->string('condition');
+            $table->string('image_path');
+            $table->enum('condition', ['良好', '目立った傷や汚れなし', 'やや傷や汚れあり', '状態が悪い'])->default('良好');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('buyer_id')->nullable()->constrained('users')->nullOnDelete();
             $table->timestamps();
         });
     }
