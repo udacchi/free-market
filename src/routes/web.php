@@ -11,3 +11,8 @@ Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('regi
 
 Route::get('/mypage', [ProfileController::class, 'index'])->middleware('authenticatedonly')->name('mypage');
 Route::get('/mypage/profile', [ProfileController::class, 'edit'])->name('mypage.profile.edit');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/mypage/profile', [ProfileController::class, 'edit'])->name('mypage.profile.edit');
+    Route::post('/mypage/profile', [ProfileController::class, 'update'])->name('mypage.profile.update');
+});
