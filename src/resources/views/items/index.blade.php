@@ -43,16 +43,21 @@
 
   <div class="items__grid">
     @foreach($items as $item)
-    <div class="item-card">
-      <div class="item-card__image">
-        <img src="{{ $item->image_path }}" alt="{{ $item->name }}">
-        @if($item->is_sold === 1)
-        <div class="item-card__sold">Sold</div>
-        @endif
+      <div class="item-card">
+        <a href="{{ route('items.show', $item->id) }}" class="item-card__link">
+          <div class="item-card__image">
+            <img src="{{ $item->image_path }}" alt="{{ e($item->name) }}">
+            @if($item->is_sold)
+              <div class="item-card__sold">Sold</div>
+            @endif
+          </div>
+          <p class="item-card__name">{{ $item->name }}</p>
+        </a>
       </div>
-      <p class="item-card__name">{{ $item->name }}</p>
-    </div>
     @endforeach
   </div>
 </div>
 @endsection
+
+<p>画像パス: {{ $item->image }}</p>
+
