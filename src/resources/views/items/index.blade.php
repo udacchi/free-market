@@ -30,15 +30,14 @@
 </div>
 @endsection
 
-
 @section('content')
 <div class="items__tabs-wrapper">
   <div class="items__tabs">
-    <a class="items__tab items__tab--active" href="#">おすすめ</a>
+    <a class="items__tab {{ $tab === 'recommend' ? 'items__tab--active' : '' }}" href="{{ url('/') }}">おすすめ</a>
     @auth
-      <a class="items__tab" href="{{ url('/?tab=mylist') }}">マイリスト</a>
+      <a class="items__tab {{ $tab === 'mylist' ? 'items__tab--active' : '' }}" href="{{ url('/?tab=mylist') }}">マイリスト</a>
     @else
-      <a class="items__tab items__tab--disabled">マイリスト</a>
+      <span class="items__tab items__tab--disabled">マイリスト</span>
     @endauth
   </div>
 

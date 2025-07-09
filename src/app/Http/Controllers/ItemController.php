@@ -8,15 +8,53 @@ use App\Models\Item;
 
 class ItemController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $query = Item::with('user', 'buyer');
-        if (Auth::check()) {
-            $query->where('user_id', '!=', Auth::id());
+        $tab = $request->get('tab', 'recommend'); 
+
+        if ($tab === 'mylist' && Auth::check()) {
+            
+            $items = Item::where('buyer_id', Auth::id())->latest()->get();
+        } else {
+            
+            $query = Item::with('user', 'buyer');
+
+            if (Auth::check()) {
+                $query->where('user_id', '!=', Auth::id());
+            }
+
+            $items = $query->latest()->get();
         }
 
-        $items = $query->latest()->get();
+        return view('items.index', [
+            'items' => $items,
+            'tab' => $tab,
+        ]);
+    }
 
-        return view('items.index', compact('items'));
+    public function mylist()
+    {
+        if (!Auth::check()) {
+            return redirect('login');
+        }
+
+        $user = Auth::user();
+
+        $llikedItemIds = $user->likes()->pluck('item_id');
+
+        $items = Item::with('user', 'buyer')
+            ->whereIn('id', $likedItemIds)
+            ->latest()
+            ->get();
+
+        return view('items.mylist', [
+            'items' => $items,
+            'likedItemIds' => $likedItemIds,
+        ]);
+    }
+
+    public function show(Item $item)
+    {
+        return view('items.show', compact('item'));
     }
 }
