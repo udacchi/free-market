@@ -44,8 +44,8 @@ class Item extends Model
         return $this->hasMany(Comment::class);
     }
 
-    public function category()
+    public function categories()
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsToMany(Category::class);
     }
 }

@@ -101,6 +101,29 @@
   margin-bottom: 12px;
 }
 
+.item__category {
+  font-size: 24px;
+  color: #000000;
+  margin-bottom: 8px;
+}
+
+.item__category .category__name {
+  font-size: 20px;
+  color: #000000;
+}
+
+
+.item__condition {
+  font-size: 24px;
+  color: #000000;
+  margin-bottom: 8px;
+}
+
+.condition__value {
+  font-size: 20px;
+  color: #000000;
+}
+
 .item-comment {
   display: flex;
   align-items: flex-start;

@@ -79,8 +79,19 @@
 
       <div class="item-detail__section">
         <h2>商品の情報</h2>
-        <p><strong>カテゴリ：</strong>{{ $item->category->name ?? '未設定' }}</p>
-        <p><strong>商品の状態：</strong>{{ $item->condition }}</p>
+        <p class="item__category"><strong>カテゴリ：</strong>
+          @if($item->categories && $item->categories->count())
+            @foreach($item->categories as $category)
+              <span class="category__name">{{ $category->name }}</span>{{ !$loop->last ? ' / ' : '' }}
+            @endforeach
+          @else
+              未設定
+          @endif
+        </p>
+
+        <p class="item__condition"><strong>商品の状態：</strong>
+          <span class="condition__value">{{ $item->condition }}</span>
+        </p>
       </div>
 
       <div class="item-detail__section">
