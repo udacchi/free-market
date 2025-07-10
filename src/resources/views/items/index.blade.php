@@ -59,5 +59,4 @@
 </div>
 @endsection
 
-<p>画像パス: {{ $item->image }}</p>
 
