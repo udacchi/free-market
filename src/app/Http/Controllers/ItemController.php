@@ -40,7 +40,7 @@ class ItemController extends Controller
 
         $user = Auth::user();
 
-        $llikedItemIds = $user->likes()->pluck('item_id');
+        $likedItemIds = $user->likes()->pluck('item_id');
 
         $items = Item::with('user', 'buyer')
             ->whereIn('id', $likedItemIds)
@@ -55,6 +55,8 @@ class ItemController extends Controller
 
     public function show(Item $item)
     {
+        $item->load('comments.user', 'category', 'likedByUsers')->loadCount('likedByUsers');
+
         return view('items.show', compact('item'));
     }
 }

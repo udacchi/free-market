@@ -46,8 +46,27 @@
       </div>
 
       <div class="item-detail__icons">
-        <span class="item-detail__likes">★ {{ $item->likes_count ?? 0 }}</span>
-        <span class="item-detail__comments">💬 {{ $item->comments->count() }}</span>
+        <form method="POST" action="{{ route('items.like', $item->id) }}" style="text-align: center;">
+          @csrf
+          @auth
+          <button type="submit" class="like-button" style="background: none; border: none; cursor:pointer;">
+            @if(auth()->check() && auth()->user()->likedItems->contains($item->id))
+               <i class="fas fa-star star-icon"></i>
+            @else
+               <i class="far fa-star star-icon"></i>
+            @endif
+          </button>
+          @else
+          <i class="far fa-star icon"></i>
+          @endauth
+          <div class="icon-count">{{ $item->likes_count ?? 0 }}</div>
+        </form>
+
+        <div class="comment-display" style="text-align: center;">
+          <i class="far fa-comment icon"></i>
+          <div class="icon-count">{{ $item->comments->count() }}</div>
+        </div>
+        
       </div>
 
       <a href="#" class="item-detail__purchase-button">購入手続きへ</a>

@@ -51,14 +51,28 @@
 
 .item-detail__icons {
   display: flex;
-  gap: 20px;
+  gap: 50px;
+  margin-left: 20px;
   margin-bottom: 16px;
 }
 
-.item-detail__like,
-.item-detail__comments {
-  font-size: 18px;
+.icon {
+  font-size: 40px;
   color: #000000;
+  transition: transform 0.2s ease;
+}
+
+.like-button:hover .icon,
+.comment-display:hover .icon {
+  transform: scale(1.1);
+  color: #000000;
+}
+
+.icon-count {
+  font-size: 18px;
+  text-align: center;
+  color: #000000;
+  margin-top: 4px;
 }
 
 .item-detail__purchase-button {

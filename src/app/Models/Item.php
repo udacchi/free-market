@@ -34,13 +34,18 @@ class Item extends Model
         return !is_null($this->buyer_id);
     }
 
-    public function likes()
+    public function likedByUsers()
     {
-        return $this->hasMany(Like::class);
+        return $this->belongsToMany(User::class, 'likes')->withTimestamps();
     }
 
     public function comments()
     {
         return $this->hasMany(Comment::class);
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
     }
 }

@@ -42,8 +42,8 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function likes()
+    public function likedItems()
     {
-        return $this->hasMany(Like::class);
+        return $this->belongsToMany(Item::class, 'likes')->withTimestamps();
     }
 }
