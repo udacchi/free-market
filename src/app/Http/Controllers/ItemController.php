@@ -14,7 +14,7 @@ class ItemController extends Controller
 
         if ($tab === 'mylist' && Auth::check()) {
             $items = Auth::user()->likedItems()
-                ->with(['user', 'byer', 'comments.user'])
+                ->with(['user', 'buyer', 'comments.user'])
                 ->latest()
                 ->get();
         } else {
