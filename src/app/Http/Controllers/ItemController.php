@@ -10,14 +10,15 @@ class ItemController extends Controller
 {
     public function index(Request $request)
     {
-        $tab = $request->get('tab', 'recommend'); 
+        $tab = $request->get('tab', 'recommend');
 
         if ($tab === 'mylist' && Auth::check()) {
-            
-            $items = Item::where('buyer_id', Auth::id())->latest()->get();
+            $items = Auth::user()->likedItems()
+                ->with(['user', 'byer', 'comments.user'])
+                ->latest()
+                ->get();
         } else {
-            
-            $query = Item::with('user', 'buyer');
+            $query = Item::with(['user', 'buyer', 'comments.user']);
 
             if (Auth::check()) {
                 $query->where('user_id', '!=', Auth::id());

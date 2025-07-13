@@ -20,6 +20,6 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::get('/item/{item}', [ItemController::class, 'show'])->name('items.show');
-Route::post('/comments/{item}', [CommentController::class, 'store'])->name('comments.store')->middleware('auth');
+Route::post('/item/{item}/comments', [CommentController::class, 'store'])->name('comments.store')->middleware('auth');
 
 Route::post('/items/{item}/like', [LikeController::class, 'toggle'])->middleware('auth')->name('items.like');

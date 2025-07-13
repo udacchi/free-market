@@ -42,7 +42,7 @@
   </div>
 
   <div class="items__grid">
-    @foreach($items as $item)
+    @forelse($items as $item)
       <div class="item-card">
         <a href="{{ route('items.show', $item->id) }}" class="item-card__link">
           <div class="item-card__image">
@@ -54,8 +54,17 @@
           <p class="item-card__name">{{ $item->name }}</p>
         </a>
       </div>
-    @endforeach
+    @empty
+      <p class="items__empty-message">
+        @if($tab === 'mylist')
+          マイリストに商品がありません。
+        @else
+          商品が見つかりませんでした。
+        @endif
+      </p>
+    @endforelse
   </div>
+    
 </div>
 @endsection
 

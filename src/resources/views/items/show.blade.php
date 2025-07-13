@@ -46,21 +46,16 @@
       </div>
 
       <div class="item-detail__icons">
-        <form method="POST" action="{{ route('items.like', $item->id) }}" style="text-align: center;">
-          @csrf
-          @auth
-          <button type="submit" class="like-button" style="background: none; border: none; cursor:pointer;">
+        <div class="like-button-wrapper">
+          <button id="like-button" data-item-id="{{ $item->id }}" class="like-button">
             @if(auth()->check() && auth()->user()->likedItems->contains($item->id))
-               <i class="fas fa-star star-icon"></i>
+              <i class="fas fa-star star-icon liked"></i>
             @else
-               <i class="far fa-star star-icon"></i>
+              <i class="far fa-star star-icon not-liked"></i>
             @endif
           </button>
-          @else
-          <i class="far fa-star icon"></i>
-          @endauth
-          <div class="icon-count">{{ $item->likes_count ?? 0 }}</div>
-        </form>
+          <div class="icon-count">{{ $item->liked_by_users_count ?? 0 }}</div>
+        </div>
 
         <div class="comment-display" style="text-align: center;">
           <i class="far fa-comment icon"></i>
@@ -97,15 +92,15 @@
       <div class="item-detail__section">
         <h2>コメント({{ $item->comments->count() }})</h2>
         @foreach($item->comments as $comment)
-          <div class="item-comment">
-            <div class="item-comment__icon">
-              <img src="{{ asset('images/user-icon.png') }}" alt="ユーザーアイコン" class="item-comment__icon-img">
-            </div>
-            <div class="item-comment__content">
+        <div class="item-comment">
+          <div class="item-comment__header">
+            <img src="{{ asset('storage/' . ($comment->user->profile_image ?? 'images/user-icon.png')) }}" class="item-comment__icon-img" >
+            <div class="item-comment__meta">
               <div class="item-comment__user">{{ $comment->user->name }}</div>
-              <div class="item-comment__text">{{ $comment->body }}</div>
             </div>
           </div>
+          <div class="item-comment__text">{{ $comment->body }}</div>
+        </div>        
         @endforeach
 
         <div class="item-comment-form">
@@ -121,4 +116,42 @@
     </div>
   </div>
 </div>
+@endsection
+
+@section('js')
+<script>
+  document.getElementById('like-button')?.addEventListener('click', function (e) {
+    e.preventDefault();
+    const itemId = this.dataset.itemId;
+
+    fetch(`/items/${itemId}/like`, {
+      method: 'POST',
+      headers: {
+        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      }
+    }).then(res => res.json())
+      .then(data => {
+        if (data.status === 'success') {
+          // アイコンの切り替え
+          const icon = this.querySelector('i');
+          const countEl = document.querySelector('.icon-count');
+          let count = parseInt(countEl.textContent);
+
+          if (icon.classList.contains('fas')) {
+            // すでにいいね済 → 解除
+            icon.classList.remove('fas', 'liked');
+            icon.classList.add('far', 'not-liked');
+            countEl.textContent = count - 1;
+          } else {
+            // 未いいね → 登録
+            icon.classList.remove('far', 'not-liked');
+            icon.classList.add('fas', 'liked');
+            countEl.textContent = count + 1;
+          }
+        }
+      });
+  });
+</script>
 @endsection

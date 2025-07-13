@@ -17,6 +17,6 @@ class LikeController extends Controller
             $user->likedItems()->attach($item->id);
         }
 
-        return back();
+        return response()->json(['status' => 'success']);
     }
 }
