@@ -36,7 +36,7 @@
 
 .items__grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
   gap: 24px;
   padding: 20px;
 }
@@ -50,7 +50,8 @@
 }
 
 .item-card__image {
-  height: 320px; 
+  width: 280px;
+  height: 290px; 
   overflow: hidden;
 }
 
