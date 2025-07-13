@@ -76,11 +76,13 @@
         <h2>商品の情報</h2>
         <p class="item__category"><strong>カテゴリ：</strong>
           @if($item->categories && $item->categories->count())
-            @foreach($item->categories as $category)
-              <span class="category__name">{{ $category->name }}</span>{{ !$loop->last ? ' / ' : '' }}
-            @endforeach
+            <span class="category-tags">
+              @foreach($item->categories as $category)
+                <span class="category-tag">{{ $category->name }}</span>
+              @endforeach
+            </span>
           @else
-              未設定
+            未設定
           @endif
         </p>
 
