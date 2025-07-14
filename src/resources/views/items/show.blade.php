@@ -109,7 +109,10 @@
           <form action="{{ route('comments.store', $item->id) }}" method="POST">
             @csrf
             <label for="comment-body" class="item-comment-form__label">商品へのコメント</label>
-            <textarea name="body" id="comment-body" class="item-comment-form__textarea" rows="4" required></textarea>
+            <textarea name="body" id="comment-body" class="item-comment-form__textarea" rows="4">{{ old('body') }}</textarea>
+            @error('body')
+              <div class="item-comment-form__error">{{ $message }}</div>
+            @enderror
             <button type="submit" class="item-comment-form__submit">コメントを送信する</button>
           </form>
         </div>

@@ -12,7 +12,10 @@ class CommentController extends Controller
     public function store(Request $request, Item $item)
     {
         $request->validate([
-            'body' => ['required', 'string', 'max:500'],
+            'body' => ['required', 'string', 'max:255'],
+        ], [
+            'body.required' => 'コメントを入力してください。',
+            'body.max' => 'コメントは255文字以内で入力してください。',
         ]);
 
         Comment::create([
