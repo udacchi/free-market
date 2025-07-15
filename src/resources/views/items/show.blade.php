@@ -63,8 +63,10 @@
         </div>
         
       </div>
-
-      <a href="#" class="item-detail__purchase-button">購入手続きへ</a>
+      
+      <a href="{{ route('purchase.show', $item->id) }}" class="item-detail__purchase-button">
+        購入手続きへ
+      </a>
 
       <div class="item-detail__section">
         <h2>商品説明</h2>

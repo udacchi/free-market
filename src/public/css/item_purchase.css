@@ -1,0 +1,181 @@
+.purchase__wrapper {
+  display: flex;
+  gap: 40px;
+  padding: 40px;
+}
+
+.purchase-left__container {
+  flex: 2;
+  padding: 40px;
+}
+
+.purchase-right__container {
+  flex: 1;
+  padding: 40px;
+}
+
+.section-divider {
+  clear: both;
+  border-bottom: 1px solid #000000;
+  margin: 24px 0;
+  height: 1px;
+}
+
+.item-detail__row {
+  display: flex;
+  gap: 60px;           
+  margin-bottom: 100px;
+}
+
+
+.item-detail__image img {
+  width: 180px;
+  height: 180px;
+  object-fit: cover;
+}
+
+.item-detail__info {
+  margin-top: 0;
+}
+
+.item-detail__name {
+  font-size: 30px;
+  font-weight: bold;
+  color: #000000;
+  margin-bottom: 20px;
+}
+
+.item-detail__price {
+  font-size: 28px;
+  font-weight: normal;
+  color: #000000;
+}
+
+.payment-method,
+.delivery-address {
+  margin-top: 40px;
+}
+
+.payment-method label {
+  display: block;
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 12px;
+  padding-left: 30px;
+}
+
+.custom-select-wrapper {
+  position: relative;
+  width: 265px;
+  margin-left: 90px;
+  margin-top: 36px;
+  margin-bottom: 72px;
+}
+
+.custom-select-wrapper select {
+  width: 100%;
+  height: 40px;
+  padding: 8px 40px 8px 12px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #000000;
+  border: 1px solid #000000;
+  border-radius: 4px;
+  appearance: none;
+  -webkit-appearance: none; /* Safari対策 */
+  -moz-appearance: none;    /* Firefox対策 */
+  background-color: #FFFFFF;
+  cursor: pointer;
+}
+
+.custom-select-wrapper::after {
+  content: "▼";
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  font-size: 12px;
+  color: #000;
+  pointer-events: none;
+}
+
+
+.delivery-address__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.delivery-address__header label {
+  display: block;
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  padding-left: 30px;
+}
+
+.change-link {
+  display: block;
+  font-size: 20px;
+  color: #0073CC;
+  text-decoration: none;
+  padding-right: 30px;
+  line-height: 1;
+  margin-top: -20px;
+}
+
+.delivery-address p {
+  font-size: 20px;
+  font-weight: bolder;
+  color: #000000;
+  line-height: 1.6;
+  margin-left: 90px;
+}
+
+.purchase-summary {
+  margin-top: 40px;
+}
+
+.purchase-summary table {
+  width: 440px;
+  height: 230px;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.purchase-summary td {
+  border-top: 1px solid #000000;
+  border-bottom: 1px solid #000000;
+  padding: 12px;
+  color: #000;
+}
+
+/* 左側：項目ラベル */
+.purchase-summary td:first-child {
+  border-left: 1px solid #000000;
+  font-size: 20px;
+  text-align: center;
+  width: 50%;
+}
+
+/* 右側：値 */
+.purchase-summary td:last-child {
+  border-right: 1px solid #000000;
+  font-size: 24px;
+  text-align: center;
+  width: 50%;
+}
+
+.purchase-button {
+  width: 440px;
+  height: 60px;
+  margin-top: 60px;
+  background-color: #FF5555;
+  color: #FFFFFF;
+  font-size: 26px;
+  padding: 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
