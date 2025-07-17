@@ -7,6 +7,8 @@ use App\Http\Controllers\ItemController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\PurchaseController;
+use App\Http\Controllers\MypageController;
+
 
 Route::get('/', [ItemController::class, 'index'])->name('items.index');
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
@@ -32,3 +34,4 @@ Route::middleware(['auth'])->group(function () {
 
 
 Route::get('/mypage/profile', [ProfileController::class, 'edit'])->name('mypage.profile.edit');    //変更必要
+Route::get('/mypage', [MypageController::class, 'index'])->middleware('auth')->name('mypage');
