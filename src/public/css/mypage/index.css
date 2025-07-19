@@ -43,7 +43,7 @@
 .info-row {
   display: flex;
   align-items: center;
-  gap: 16px; /* ユーザー名とボタンの間隔 */
+  gap: 16px;
   flex-wrap: wrap;
 }
 
@@ -73,7 +73,6 @@
   margin-bottom: 24px;
 }
 
-/* 下線だけ画面いっぱいに引く */
 .items__tabs-wrapper::after {
   content: '';
   position: absolute;
@@ -87,7 +86,6 @@
   z-index: -1;
 }
 
-/* タブ部分は左寄せ＋内側余白（例：60px） */
 .items__tabs {
   display: flex;
   gap: 20px;
