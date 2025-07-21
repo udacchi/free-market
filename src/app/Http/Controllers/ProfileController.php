@@ -45,4 +45,29 @@ class ProfileController extends Controller
 
         return redirect('/');
     }
+
+    public function updateAddress(Request $request)
+    {
+        $request->validate([
+            'postal' => 'required|string|max:255',
+            'address' => 'required|string|max:255',
+            'building' => 'nullable|string|max:255',
+        ]);
+
+        $user = Auth::user();
+        $user->update([
+            'postal' => $request->postal,
+            'address' => $request->address,
+            'building' => $request->building,
+        ]);
+
+        // 商品IDが渡されていれば、購入画面へ戻る
+        if ($request->filled('redirect_item_id')) {
+            return redirect()->route('purchase.address', ['item' => $request->redirect_item_id])
+                ->with('success', '住所を更新しました。');
+        }
+
+        // そうでなければ通常のマイページに戻るなど
+        return redirect()->route('purchase')->with('success', '住所を更新しました。');
+    }
 }

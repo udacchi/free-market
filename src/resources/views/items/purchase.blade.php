@@ -36,7 +36,7 @@
     <div class="delivery-address">
       <div class="delivery-address__header">
         <label>配送先</label>
-        <a href="{{ route('mypage.profile.edit') }}" class="change-link">変更する</a>
+        <a href="{{ route('purchase.address.edit', ['item' => $item->id]) }}" class="change-link">変更する</a>
       </div>
 
       @if(optional($user)->postal || optional($user)->address || optional($user)->building)

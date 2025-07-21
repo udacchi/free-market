@@ -31,4 +31,42 @@ class PurchaseController extends Controller
 
         return redirect()->route('purchase.show', ['item' => $item->id])->with('success', '購入確認画面へ遷移しました。');
     }
+
+    public function editAddress(Item $item)
+    {
+        $user = Auth::user();
+        return view('items.address', compact('item', 'user'));
+    }
+
+    public function updateAddress(Request $request, Item $item)
+    {
+        $request->validate([
+            'postal' => 'required|string|max:255',
+            'address' => 'required|string|max:255',
+            'building' => 'nullable|string|max:255',
+        ]);
+
+        $user = Auth::user();
+        $user->update([
+            'postal' => $request->postal,
+            'address' => $request->address,
+            'building' => $request->building,
+        ]);
+
+        return redirect()->route('purchase.address', ['item' => $item->id])
+            ->with('success', '配送先住所を更新しました。');
+    }
+    public function showAddress(Item $item)
+    {
+        $paymentMethods = [
+            'convenience' => 'コンビニ支払い',
+            'credit' => 'カード支払い',
+        ];
+
+        // ここが重要！ユーザー情報をDBから最新で取得しなおす
+        $user = Auth::user()->fresh();
+
+        return view('items.purchase', compact('item', 'paymentMethods', 'user'))
+            ->with('success', '配送先住所を更新しました。');
+    }
 }

@@ -21,6 +21,10 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'postal',
+        'address',
+        'building',
+        'avatar',
     ];
 
     /**
@@ -46,4 +50,6 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Item::class, 'likes')->withTimestamps();
     }
+
+
 }

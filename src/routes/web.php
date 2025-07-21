@@ -10,27 +10,33 @@ use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\MypageController;
 use App\Http\Controllers\RegisteredUserController;
 
+// トップ・認証画面
 Route::get('/', [ItemController::class, 'index'])->name('items.index');
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
+Route::post('/register', [RegisteredUserController::class, 'store'])->name('register');
 
-// マイページ表示（mypage/index.blade.php）
-Route::get('/mypage', [MypageController::class, 'index'])->middleware('auth')->name('mypage');
+// 商品詳細
+Route::get('/item/{item}', [ItemController::class, 'show'])->name('items.show');
 
-// プロフィール設定画面（mypage/profile.blade.php）
+// ログイン必須エリア
 Route::middleware('auth')->group(function () {
+
+    // マイページ
+    Route::get('/mypage', [MypageController::class, 'index'])->name('mypage');
     Route::get('/mypage/profile', [ProfileController::class, 'edit'])->name('mypage.profile.edit');
     Route::post('/mypage/profile', [ProfileController::class, 'update'])->name('mypage.profile.update');
-});
 
-Route::get('/item/{item}', [ItemController::class, 'show'])->name('items.show');
-Route::post('/item/{item}/comments', [CommentController::class, 'store'])->middleware('auth')->name('comments.store');
+    // コメント・いいね
+    Route::post('/item/{item}/comments', [CommentController::class, 'store'])->name('comments.store');
+    Route::post('/items/{item}/like', [LikeController::class, 'toggle'])->name('items.like');
 
-Route::post('/items/{item}/like', [LikeController::class, 'toggle'])->middleware('auth')->name('items.like');
-
-Route::middleware('auth')->group(function () {
+    // 商品購入
     Route::get('/purchase/{item}', [PurchaseController::class, 'show'])->name('purchase.show');
     Route::post('/purchase/{item}', [PurchaseController::class, 'store'])->name('purchase.store');
-});
 
-Route::post('/register', [RegisteredUserController::class, 'store'])->name('register');
+    // 配送先住所編集フロー（購入用）
+    Route::get('/purchase/address/{item}/edit', [PurchaseController::class, 'editAddress'])->name('purchase.address.edit'); // 編集フォーム表示
+    Route::put('/purchase/address/{item}', [PurchaseController::class, 'updateAddress'])->name('purchase.address.update');  // フォーム送信処理
+    Route::get('/purchase/address/{item}', [PurchaseController::class, 'showAddress'])->name('purchase.address');           // 住所変更後の確認表示
+});
