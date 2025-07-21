@@ -33,5 +33,7 @@ Route::middleware(['auth'])->group(function () {
 });
 
 
-Route::get('/mypage/profile', [ProfileController::class, 'edit'])->name('mypage.profile.edit');    //変更必要
+Route::get('/mypage/profile', [ProfileController::class, 'edit'])->name('mypage.profile.edit');
+Route::put('/mypage/profile', [ProfileController::class, 'update'])->name('mypage.profile.update');
+
 Route::get('/mypage', [MypageController::class, 'index'])->middleware('auth')->name('mypage');

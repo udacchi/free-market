@@ -14,7 +14,8 @@ class ProfileController extends Controller
     
     public function edit()
     {
-        return view('mypage.profile');
+        $user = Auth::user();
+        return view('mypage.profile', compact('user'));
     }
 
     public function update(Request $request)
@@ -35,8 +36,8 @@ class ProfileController extends Controller
         $user->building = $request->input('building');
 
         if ($request->hasFile('avatar')) {
-            $path = $request->file('avatar')->store('avatars', 'public');
-            $user->avatar = $path;
+            $avatarPath = $request->file('avatar')->store('avatars', 'public');
+            $user->avatar = $avatarPath;
         }
 
         $user->save();
