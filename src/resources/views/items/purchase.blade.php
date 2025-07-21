@@ -4,32 +4,6 @@
 <link rel="stylesheet" href="{{ asset('css/items/purchase.css') }}">
 @endsection
 
-@section('search')
-<form class="search-form" action="/search" method="get">
-  <input class="search-form__keyword-input" type="text" name="keyword" placeholder="なにをお探しですか？" value="{{ request('keyword') }}">
-</form>
-@endsection
-
-@section('link')
-<div class="header__links">
-  @auth
-  <a class="header__link" href="#" 
-     onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-    ログアウト
-  </a>
-  <form id="logout-form" action="/logout" method="POST" style="display: none;">
-    @csrf
-  </form>
-  <a class="header__link" href="/mypage">マイページ</a>
-  <a class="header__submit-button" href="/sell">出品</a>
-  @else
-  <a class="header__link" href="{{ route('login') }}">ログイン</a>
-  <a class="header__link" href="{{ route('mypage') }}">マイページ</a>
-  <a class="header__submit-button" href="/sell">出品</a>
-  @endauth
-</div>
-@endsection
-
 @section('content')
 <div class="purchase__wrapper">
   <div class="purchase-left__container">

@@ -4,6 +4,12 @@
 <link rel="stylesheet" href="{{ asset('css/auth/login.css') }}">
 @endsection
 
+@section('search')
+@endsection
+
+@section('link')
+@endsection
+
 @section('content')
 <div class="login-form">
   <div class="login-form__inner">

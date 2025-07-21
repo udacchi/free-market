@@ -4,6 +4,12 @@
 <link rel="stylesheet" href="{{ asset('css/auth/register.css') }}">
 @endsection
 
+@section('search')
+@endsection
+
+@section('link')
+@endsection
+
 @section('content')
 <div class="register-form">
   <div class="register-form__inner">
