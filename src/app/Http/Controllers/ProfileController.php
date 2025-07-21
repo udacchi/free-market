@@ -9,7 +9,8 @@ class ProfileController extends Controller
 {
     public function index()
     {
-        return view('mypage');
+        $user = Auth::user();
+        return view('mypage', compact('user'));
     }
     
     public function edit()

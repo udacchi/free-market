@@ -10,19 +10,13 @@
 
   <div class="profile-edit__avatar-area">
     <div class="profile-edit__avatar">
-      <img src="{{ $user->avatar ?? asset('images/default-avatar.png') }}" alt="プロフィール画像">
+      <img src="{{ isset($user) && $user->avatar ?? asset('images/default-avatar.png') }}">
     </div>
     <button class="profile-edit__image-button">画像を選択する</button>
   </div>
 
   <form class="profile-edit__form" action="{{ route('mypage.profile.update') }}" method="POST" enctype="multipart/form-data">
     @csrf
-    @method('PUT')
-    <div class="profile-edit__group">
-      <label class="profile-edit__label" for="avatar">プロフィール画像</label>
-      <input class="profile-edit__input" type="file" name="avatar" id="avatar">
-    </div>
-
     <div class="profile-edit__group">
       <label class="profile-edit__label" for="name">ユーザー名</label>
       <input class="profile-edit__input" type="text" name="name" id="name" value="{{ old('name', $user->name) }}">
