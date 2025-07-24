@@ -23,14 +23,15 @@ class PurchaseController extends Controller
     public function store(Request $request, Item $item)
     {
         $request->validate([
-            'payment_method' => ['required', 'in:convenience, credit']
+            'payment_method' => ['required', 'in:convenience,credit']
         ]);
 
         $item->buyer_id = Auth::id();
-        $item->save();
+        $success = $item->save();
 
-        return redirect()->route('purchase.show', ['item' => $item->id])->with('success', '購入確認画面へ遷移しました。');
+        return redirect()->route('items.index')->with('success', '購入が完了しました');
     }
+
 
     public function editAddress(Item $item)
     {
