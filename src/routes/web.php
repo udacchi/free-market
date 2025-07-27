@@ -39,4 +39,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/purchase/address/{item}/edit', [PurchaseController::class, 'editAddress'])->name('purchase.address.edit'); // 編集フォーム表示
     Route::put('/purchase/address/{item}', [PurchaseController::class, 'updateAddress'])->name('purchase.address.update');  // フォーム送信処理
     Route::get('/purchase/address/{item}', [PurchaseController::class, 'showAddress'])->name('purchase.address');           // 住所変更後の確認表示
+    //商品の出品
+    Route::get('/sell', [ItemController::class, 'sell'])->name('items.sell');
+    Route::post('/items', [ItemController::class, 'store'])->name('items.store');
 });
