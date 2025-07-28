@@ -25,16 +25,33 @@
     </div>
   </div>
 
+  @php
+    use Illuminate\Support\Str;
+  @endphp
+
   <div class="item__grid">
     @if ($tab === 'sell')
       @forelse($items as $item)
-        @include('components.item-card', ['item' => $item])
+        <div class="item-card">
+          <a href="{{ route('items.show', $item->id) }}">
+            <img src="{{ Str::startsWith($item->image_path, 'http') ? $item->image_path : asset('storage/' . $item->image_path) }}"
+               alt="{{ $item->name }}" class="item-card__image">
+            <h3 class="item-card__name">{{ $item->name }}</h3>
+          </a>
+        </div>
       @empty
         <p class="items__empty-message">出品した商品はありません。</p>
       @endforelse
+
     @elseif ($tab === 'purchase')
       @forelse($purchasedItems as $item)
-        @include('components.item-card', ['item' =>$item])
+        <div class="item-card">
+          <a href="{{ route('items.show', $item->id) }}">
+            <img src="{{ Str::startsWith($item->image_path, 'http') ? $item->image_path : asset('storage/' . $item->image_path) }}"
+               alt="{{ $item->name }}" class="item-card__image">
+            <h3 class="item-card__name">{{ $item->name }}</h3>
+          </a>
+        </div>
       @empty
         <p class="items__empty-message">購入した商品はありません。</p>
       @endforelse

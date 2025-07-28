@@ -1,6 +1,7 @@
 html,
 body {
     height: 100%;
+    font-family: Inter;
 }
 
 .app {
@@ -16,14 +17,15 @@ body {
     height: 82px;
     padding: 0 20px;
     background-color: #000000;
+    flex-wrap: wrap;
 
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: 1fr;
 }
 
 .header__logo {
+    min-width: 120px;
     justify-self: start;
-
     grid-column: 1;
 }
 
@@ -35,10 +37,11 @@ body {
 .search-form {
     display: flex;
     align-items: center;
-    width: 500px;
-    height: 50px;
+    min-width: 200px;
     border-radius: 5px;
     background-color: #ffffff;
+    padding: 6px 6px;
+    margin-left: auto 0;
 
     grid-column: 2;
 }
@@ -80,3 +83,62 @@ body {
 input::placeholder {
   color: #000000;
 }
+
+
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  justify-content: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.card {
+  flex: 1 1 300px;
+  max-width: 400px;
+  min-width: 280px;
+  box-sizing: border-box;
+}
+
+@media screen and (min-width: 1400px) and (max-width: 1540px) {
+  .container {
+    gap: 32px;
+    justify-content: space-between;
+  }
+
+  .card {
+    flex: 0 0 30%;
+    max-width: 30%;
+  }
+}
+
+@media screen and (min-width: 768px) and (max-width: 850px) {
+  .container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .card {
+    width: 90%;
+    max-width: 500px;
+  }
+}
+
+img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.card h3 {
+  font-size: 1.2rem;
+}
+
+@media screen and (max-width: 850px) {
+  .card h3 {
+    font-size: 1rem;
+  }
+}
+

@@ -112,14 +112,32 @@
 /* ---------- グリッドレイアウト ---------- */
 .item__grid {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 24px;
+  margin-top: 32px;
+}
+
+.item-card:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.item-card__image {
+  width: 280px;
+  height: 290px;
+  object-fit: cover;
+  margin-bottom: 8px;
+}
+
+.item-card__name {
+  font-size: 25px;
+  font-weight: 400;
+  margin: 0 0 4px;
 }
 
 .items__empty-message {
   text-align: center;
   font-size: 20px;
   color: #5F5F5F;
-  padding: 40px 0;
+  white-space: nowrap;
 }
 
