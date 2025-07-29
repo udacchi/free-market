@@ -10,6 +10,8 @@ use Laravel\Fortify\Contracts\CreatesNewUsers;
 use App\Http\Requests\RegisterRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Auth\Events\Registered;
+
 
 class CreateNewUser implements CreatesNewUsers
 {
@@ -20,6 +22,7 @@ class CreateNewUser implements CreatesNewUsers
      *
      * @param  array<string, string>  $input
      */
+
     public function create(array $input): User
     {
         Validator::make($input, (new RegisterRequest())->rules())->validate();
@@ -30,12 +33,18 @@ class CreateNewUser implements CreatesNewUsers
             'password' => Hash::make($input['password']),
         ]);
 
+        // 🔽 メール認証イベントを発火（これが超重要）
+        event(new Registered($user));
+
+        // 🔽 自動ログイン（問題ありません）
         Auth::login($user);
 
-        redirect(URL::to('/mypage/profile'))->send();
+        // ❌ redirectは削除：FortifyがHOMEへリダイレクトしてくれる
+        // redirect(URL::to('/mypage/profile'))->send();
 
         return $user;
     }
+
     protected function passwordRules()
     {
         return ['required', 'string', 'min:8', 'confirmed'];

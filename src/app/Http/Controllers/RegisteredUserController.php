@@ -28,9 +28,6 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        // イベント発行（登録完了通知など）
-        event(new Registered($user));
-
         // ✅ 自動ログイン
         Auth::login($user);
 
