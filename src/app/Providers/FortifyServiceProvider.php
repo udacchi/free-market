@@ -10,46 +10,65 @@ use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Str;
 use Laravel\Fortify\Fortify;
+
+use Laravel\Fortify\Contracts\LoginResponse;
+use Laravel\Fortify\Contracts\RegisterResponse;
 use Laravel\Fortify\Contracts\LogoutResponse;
 use App\Actions\Fortify\LogoutResponse as CustomLogoutResponse;
-
+use Laravel\Fortify\Contracts\VerifyEmailViewResponse;
+use App\Http\Responses\VerifyEmailViewResponse as CustomVerifyEmailViewResponse;
 
 class FortifyServiceProvider extends ServiceProvider
 {
     /**
-     * Register any application services.
+     * Register application services.
      */
     public function register(): void
     {
+        // カスタムログアウトレスポンス
+        $this->app->singleton(LogoutResponse::class, CustomLogoutResponse::class);
         $this->app->singleton(
-            \Laravel\Fortify\Contracts\LogoutResponse::class,
-            \App\Actions\Fortify\LogoutResponse::class
+            VerifyEmailViewResponse::class,
+            CustomVerifyEmailViewResponse::class
         );
     }
 
     /**
-     * Bootstrap any application services.
+     * Bootstrap application services.
      */
     public function boot(): void
     {
-        
-        
+        // 登録・ログインビューの指定
+        Fortify::registerView(fn() => view('auth.register'));
+        Fortify::loginView(fn() => view('auth.login'));
+
+        // ユーザー作成ロジック
         Fortify::createUsersUsing(CreateNewUser::class);
 
-        Fortify::registerView(function () {
-            return view('auth.register');
-        });
-
-        Fortify::loginView(function () {
-            return view('auth.login');
-        });
-
+        // ログインレート制限
         RateLimiter::for('login', function (Request $request) {
-            $email = (string) $request->email;
+            return Limit::perMinute(10)->by($request->email . $request->ip());
+        });
 
-            return Limit::perMinute(10)->by($email . $request->ip());
+        // ✅ 登録後のリダイレクト先
+        $this->app->singleton(RegisterResponse::class, function () {
+            return new class implements RegisterResponse {
+                public function toResponse($request)
+                {
+                    return redirect('/mypage/profile');
+                }
+            };
+        });
+
+        // ✅ ログイン後のリダイレクト先
+        $this->app->singleton(LoginResponse::class, function () {
+            return new class implements LoginResponse {
+                public function toResponse($request)
+                {
+                    return redirect('/');
+                }
+            };
         });
     }
 }

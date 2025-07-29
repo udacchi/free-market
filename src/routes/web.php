@@ -11,7 +11,9 @@ use App\Http\Controllers\MypageController;
 use App\Http\Controllers\RegisteredUserController;
 
 // トップ・認証画面
-Route::get('/', [ItemController::class, 'index'])->name('items.index');
+Route::get('/', [ItemController::class, 'index'])
+    ->middleware(['auth', 'verified'])  // ここ重要！
+    ->name('items.index');
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
 Route::post('/register', [RegisteredUserController::class, 'store'])->name('register');
@@ -43,3 +45,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/sell', [ItemController::class, 'sell'])->name('items.sell');
     Route::post('/items', [ItemController::class, 'store'])->name('items.store');
 });
+
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/mypage/profile', [ProfileController::class, 'edit'])->name('mypage.profile.edit');
+});
+
