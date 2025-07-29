@@ -131,7 +131,12 @@
 .item-card__name {
   font-size: 25px;
   font-weight: 400;
+  color: #000000;
   margin: 0 0 4px;
+}
+
+.item-card a {
+  text-decoration: none;
 }
 
 .items__empty-message {
