@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Address;
 
 class Item extends Model
 {
@@ -48,5 +49,10 @@ class Item extends Model
     public function categories()
     {
         return $this->belongsToMany(Category::class);
+    }
+
+    public function address()
+    {
+        return $this->belongsTo(Address::class);
     }
 }

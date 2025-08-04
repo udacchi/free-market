@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Item;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Item;
+use App\Http\Requests\PurchaseRequest;
 
 class PurchaseController extends Controller
 {
@@ -20,14 +21,13 @@ class PurchaseController extends Controller
         return view('items.purchase', compact('item', 'paymentMethods', 'user'));
     }
 
-    public function store(Request $request, Item $item)
+    public function store(PurchaseRequest $request, Item $item)
     {
-        $request->validate([
-            'payment_method' => ['required', 'in:convenience,credit']
-        ]);
+        $validated = $request->validated();
 
-        $item->buyer_id = Auth::id();
-        $success = $item->save();
+        $item->buyer_id = auth()->id();
+        $item->address_id = $validated['address_id'];
+        $item->save();
 
         return redirect()->route('items.index')->with('success', '購入が完了しました');
     }
