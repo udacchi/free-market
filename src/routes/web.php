@@ -12,7 +12,7 @@ use App\Http\Controllers\RegisteredUserController;
 
 // トップ・認証画面
 Route::get('/', [ItemController::class, 'index'])
-    ->middleware(['auth', 'verified'])  // ここ重要！
+    ->middleware(['auth', 'verified']) 
     ->name('items.index');
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
