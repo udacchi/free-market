@@ -7,6 +7,7 @@ use App\Models\Item;
 use App\Models\Category;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Requests\ExhibitionRequest;
 
 class ItemController extends Controller
 {
@@ -71,37 +72,23 @@ class ItemController extends Controller
         return view('items.sell', compact('categories', 'selected'));
     }
 
-    public function store(Request $request)
+    public function store(ExhibitionRequest $request, Item $item)
     {
-        $validated = $request->validate([
-            'image'       => ['image', 'max:2048'],
-            'name'        => ['required', 'string', 'max:255'],
-            'brand'       => ['nullable', 'string', 'max:255'],
-            'description' => ['required', 'string'],
-            'price'       => ['required', 'integer', 'min:1'],
-            'condition'   => ['required', 'string'],
-            'categories'  => ['required', 'array'],
-            'categories.*' => ['integer', 'exists:categories,id'],
-        ]);
+        $validated = $request->validated();
 
-        session(['selected_categories' => $validated['categories']]);
-
-        $imagePath = null;
-        if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('images', 'public');
-        }
+        $imagePath = $request->file('image')->store('images', 'publlic');
 
         $item = Item::create([
-            'user_id'    => Auth::id(),
-            'name'       => $validated['name'],
-            'brand'      => $validated['brand'] ?? null,
-            'description' => $validated['description'],
-            'price'      => $validated['price'],
-            'condition'  => $validated['condition'],
-            'image_path' => $imagePath,
+            'user_id'       => auth()->id(),
+            'image_path'    => $imagePath,
+            'condition'     => $validated['condition'],
+            'name'          => $validated['name'],
+            'brand'         => $validated['brand'] ?? null,
+            'description'   => $validated['description'],
+            'price'         => $validated['price'],
         ]);
 
-        $item->categories()->sync($validated['categories']);
+        $item->categories()->attach($validated['categories']);
 
         return redirect()->route('items.index')->with('success', '商品を出品しました。');
     }
