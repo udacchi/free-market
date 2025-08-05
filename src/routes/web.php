@@ -10,13 +10,18 @@ use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\MypageController;
 use App\Http\Controllers\RegisteredUserController;
 
-// トップ・認証画面
-Route::get('/', [ItemController::class, 'index'])
-    ->middleware(['auth', 'verified']) 
-    ->name('items.index');
+// トップページ（公開）
+Route::get('/', [ItemController::class, 'index'])->name('items.index');
+
+// ログイン・登録
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
 Route::post('/register', [RegisteredUserController::class, 'store'])->name('register');
+
+// ログイン後のみアクセス可能なルート
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/mypage', [MypageController::class, 'index'])->name('mypage.index');
+});
 
 // 商品詳細
 Route::get('/item/{item}', [ItemController::class, 'show'])->name('items.show');
