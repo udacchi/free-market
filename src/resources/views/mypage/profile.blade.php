@@ -14,8 +14,13 @@
 
     <div class="profile-edit__avatar-area">
       <div class="profile-edit__avatar">
-        <img 
-          src="{{ $user->avatar ? asset('storage/' . $user->avatar) : asset('images/default-avatar.png') }}" alt="プロフィール画像">
+        @if ($user->avatar)
+          <img src="{{ asset('storage/' . $user->avatar) }}" alt="プロフィール画像">
+        @else
+          <div class="profile-edit__avatar--placeholder">
+            {{ $user->name }}
+          </div>
+        @endif
       </div>
 
       <label for="avatar" class="profile-edit__image-button">画像を選択する</label>
