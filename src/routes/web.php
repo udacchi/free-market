@@ -27,7 +27,7 @@ Route::middleware('auth')->group(function () {
     // マイページ
     Route::get('/mypage', [MypageController::class, 'index'])->name('mypage');
     Route::get('/mypage/profile', [ProfileController::class, 'edit'])->name('mypage.profile.edit');
-    Route::post('/mypage/profile', [ProfileController::class, 'update'])->name('mypage.profile.update');
+    Route::put('/mypage/profile', [ProfileController::class, 'update'])->name('mypage.profile.update');
 
     // コメント・いいね
     Route::post('/item/{item}/comments', [CommentController::class, 'store'])->name('comments.store');
