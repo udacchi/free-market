@@ -80,13 +80,35 @@
   resize: vertical;
 }
 
+.custom-select-wrapper {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
 .custom-select-wrapper select {
   width: 100%;
-  padding: 10px 12px;
+  padding: 10px 40px 10px 12px; /* 右側に余白を追加 */
   font-size: 16px;
   border: 1px solid #5F5F5F;
   border-radius: 4px;
+  appearance: none; /* 標準の矢印を消す */
+  background-color: #FFFFFF;
+  background-image: none;
+  cursor: pointer;
 }
+
+.custom-select-wrapper::after {
+  content: "▼";
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  pointer-events: none;
+  font-size: 16px;
+  color: #000000;
+}
+
 
 .category-tags {
   display: flex;
@@ -136,7 +158,8 @@ input[type="checkbox"]:checked + .category-tag {
 }
 
 .sell-price__input {
-  padding-left: 28px;
+  padding-left: 40px;
+  font-size: 16px;
 }
 
 .sell-form__submit {
