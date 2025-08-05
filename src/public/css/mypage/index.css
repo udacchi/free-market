@@ -64,10 +64,6 @@
   margin-left: 500px;
 }
 
-.edit-button:hover {
-  background-color: #0056b3;
-}
-
 .items__tabs {
   display: flex;
   gap: 100px;
