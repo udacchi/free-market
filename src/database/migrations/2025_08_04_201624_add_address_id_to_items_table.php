@@ -13,9 +13,12 @@ class AddAddressIdToItemsTable extends Migration
      */
     public function up()
     {
-        Schema::table('items', function (Blueprint $table) {
-            $table->unsignedBigInteger('address_id')->nullable()->after('buyer_id');
-        });
+        // address_id カラムが存在しない場合のみ追加
+        if (!Schema::hasColumn('items', 'address_id')) {
+            Schema::table('items', function (Blueprint $table) {
+                $table->unsignedBigInteger('address_id')->nullable()->after('buyer_id');
+            });
+        }
     }
 
     /**
@@ -26,7 +29,7 @@ class AddAddressIdToItemsTable extends Migration
     public function down()
     {
         Schema::table('items', function (Blueprint $table) {
-            //
+            $table->dropColumn('address_id');
         });
     }
 }
