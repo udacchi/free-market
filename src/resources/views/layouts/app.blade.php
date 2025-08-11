@@ -23,7 +23,7 @@
       @else
       <div class="header__search">
         <form class="search-form" action="/search" method="get">
-          <input class="search-form__keyword-input" type="text" name="keyword" placeholder="なにをお探しですか？" value="{{ request('keyword') }}">
+          <input class="search-form__keyword-input" type="text" name="keyword" placeholder="なにをお探しですか？" value="{{ request('keyword', $keyword ?? '') }}">
         </form>
       </div>
       @endif

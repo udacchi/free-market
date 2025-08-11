@@ -31,7 +31,7 @@
     @empty
       <p class="items__empty-message">
         @if($tab === 'mylist')
-          マイリストに商品がありません。
+          マイリストに商品はありません。
         @else
           商品が見つかりませんでした。
         @endif

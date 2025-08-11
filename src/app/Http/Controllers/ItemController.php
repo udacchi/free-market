@@ -13,27 +13,41 @@ class ItemController extends Controller
 {
     public function index(Request $request)
     {
-        $tab = $request->get('tab', 'recommend');
+        $tab     = $request->get('tab', 'recommend');
+        $keyword = trim((string) $request->query('keyword')); // ← 追加
 
-        if ($tab === 'mylist' && Auth::check()) {
-            $items = Auth::user()->likedItems()
-                ->with(['user', 'buyer', 'comments.user'])
-                ->latest()
-                ->get();
+        if ($tab === 'mylist') {
+            if (!Auth::check()) {
+                $items = collect(); // 未認証は空表示仕様のまま
+            } else {
+                $items = Auth::user()
+                    ->likedItems()                              // いいね商品
+                    ->where('items.user_id', '!=', Auth::id())  // 自分の出品は除外
+                    ->when($keyword !== '', function ($q) use ($keyword) { // ← 追加
+                        // likedItems() は items テーブルが基点なので items.name を明示
+                        $q->where('items.name', 'like', "%{$keyword}%");
+                    })
+                    ->with(['user', 'buyer', 'comments.user'])
+                    ->latest()
+                    ->get();
+            }
         } else {
             $query = Item::with(['user', 'buyer', 'comments.user']);
 
             if (Auth::check()) {
-                $query->where('user_id', '!=', Auth::id());
+                $query->where('user_id', '!=', Auth::id()); // 自分の出品は除外
+            }
+
+            // ← 追加：通常タブでもキーワードで絞り込み
+            if ($keyword !== '') {
+                $query->where('name', 'like', "%{$keyword}%");
             }
 
             $items = $query->latest()->get();
         }
 
-        return view('items.index', [
-            'items' => $items,
-            'tab' => $tab,
-        ]);
+        // ← 検索値をビューで使えるように渡す（inputのvalueに利用）
+        return view('items.index', ['items' => $items, 'tab' => $tab, 'keyword' => $keyword]);
     }
 
     public function mylist()
@@ -76,7 +90,7 @@ class ItemController extends Controller
     {
         $validated = $request->validated();
 
-        $imagePath = $request->file('image')->store('images', 'publlic');
+        $imagePath = $request->file('image')->store('images', 'public');
 
         $item = Item::create([
             'user_id'       => auth()->id(),

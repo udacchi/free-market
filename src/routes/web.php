@@ -23,6 +23,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/mypage', [MypageController::class, 'index'])->name('mypage.index');
 });
 
+// 検索フォーム
+Route::get('/search', [ItemController::class, 'index'])->name('search');
+
 // 商品詳細
 Route::get('/item/{item}', [ItemController::class, 'show'])->name('items.show');
 
