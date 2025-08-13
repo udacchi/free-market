@@ -73,9 +73,14 @@ class ItemController extends Controller
 
     public function show(Item $item)
     {
-        $item->load('comments.user', 'categories', 'likedByUsers')->loadCount('likedByUsers');
+        $item->load(['comments.user', 'categories']);  // 既存の読み込みがあればそれでもOK
+        $item->loadCount('likes');                     // ← 件数を likes_count で使えるように
 
-        return view('items.show', compact('item'));
+        $isLiked = auth()->check()
+            ? $item->likes()->where('user_id', auth()->id())->exists()
+            : false;
+
+        return view('items.show', compact('item', 'isLiked'));
     }
 
     public function sell()

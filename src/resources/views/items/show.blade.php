@@ -21,14 +21,15 @@
 
       <div class="item-detail__icons">
         <div class="like-button-wrapper">
-          <button id="like-button" data-item-id="{{ $item->id }}" class="like-button">
-            @if(auth()->check() && auth()->user()->likedItems->contains($item->id))
-              <i class="fas fa-star star-icon liked"></i>
-            @else
-              <i class="far fa-star star-icon not-liked"></i>
-            @endif
-          </button>
-          <div class="icon-count">{{ $item->liked_by_users_count ?? 0 }}</div>
+          <form action="{{ $isLiked ? route('likes.destroy', $item) : route('likes.store', $item) }}"
+                method="POST" style="display:inline">
+            @csrf
+            @if($isLiked) @method('DELETE') @endif
+            <button type="submit" class="like-button">
+              <i class="{{ $isLiked ? 'fa-solid fa-star' : 'fa-regular fa-star' }}"></i>
+            </button>
+          </form>
+          <span class="like-count">{{ $item->likes_count }}</span>
         </div>
 
         <div class="comment-display" style="text-align: center;">
