@@ -8,7 +8,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 
-class ItemSearchTestTest extends TestCase
+class ItemSearchTest extends TestCase
 {
     /** @test */
     public function 商品名の部分一致で検索できる()
