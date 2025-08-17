@@ -50,6 +50,7 @@
 }
 
 .item-detail__icons {
+  font-size: 40px;
   display: flex;
   gap: 50px;
   margin-left: 20px;
@@ -64,11 +65,11 @@
 
 
 .icon,.star-icon {
-  font-size: 40px;
   transition: transform 0.2s ease;
 }
 
 .star-icon.liked {
+  
   color: #000000;
 }
 
@@ -78,8 +79,9 @@
   color: #000000;
 }
 
+.like-count,
 .icon-count {
-  font-size: 18px;
+  font-size: 20px;
   text-align: center;
   color: #000000;
   margin-top: 4px;
