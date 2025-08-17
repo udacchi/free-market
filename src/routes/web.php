@@ -10,6 +10,7 @@ use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\MypageController;
 use App\Http\Controllers\RegisteredUserController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use App\Models\Item;
 
 /* ========================
  | メール認証関連
