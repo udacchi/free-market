@@ -14,11 +14,16 @@ class Item extends Model
         'name',
         'brand',
         'price',
+        'category',
         'description',
         'condition',
         'image_path',
         'user_id',
         'buyer_id',
+        'payment_method',
+        'shipping_postal',
+        'shipping_address',
+        'shipping_building',
     ];
 
     public function user()
@@ -53,7 +58,12 @@ class Item extends Model
 
     public function categories()
     {
-        return $this->belongsToMany(Category::class);
+        return $this->belongsToMany(Category::class)->withTimestamps();
+    }
+
+    public function items()
+    {
+        return $this->belongsToMany(Item::class)->withTimestamps();
     }
 
     public function address()
