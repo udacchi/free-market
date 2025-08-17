@@ -23,29 +23,38 @@ class ProfileController extends Controller
 
     public function update(ProfileRequest $request)
     {
-        $user = Auth::user();
+        $user = $request->user();
+        $data = $request->validated(); // ProfileRequestの検証済みデータ
 
-        // プロフィール画像の処理
+        // 画像アップロード
         if ($request->hasFile('avatar')) {
-            // 既存画像があれば削除
-            if ($user->avatar && Storage::disk('public')->exists($user->avatar)) {
-                Storage::disk('public')->delete($user->avatar);
+            if ($user->avatar && \Storage::disk('public')->exists($user->avatar)) {
+                \Storage::disk('public')->delete($user->avatar);
             }
-
-            // 新しい画像を保存
-            $avatarPath = $request->file('avatar')->store('avatars', 'public');
-            $user->avatar = $avatarPath;
+            $data['avatar'] = $request->file('avatar')->store('avatars', 'public');
         }
 
-        // その他のプロフィール情報を更新
-        $user->name     = $request->input('name', $user->name);
-        $user->postal   = $request->input('postal', $user->postal);
-        $user->address  = $request->input('address', $user->address);
-        $user->building = $request->input('building', $user->building);
+        $update = [];
 
-        $user->save();
+        if (array_key_exists('name', $data)) {
+            $update['name'] = $data['name']; // name は必須想定（ProfileRequestでrequiredに）
+        }
 
-        return redirect()->back()->with('success', 'プロフィールを更新しました。');
+        foreach (['postal', 'address', 'building'] as $k) {
+            if (array_key_exists($k, $data) && $data[$k] !== null && $data[$k] !== '') {
+                $update[$k] = $data[$k];
+            }
+        }
+
+        if (array_key_exists('avatar', $data)) {
+            $update['avatar'] = $data['avatar'];
+        }
+
+        if (!empty($update)) {
+            $user->fill($update)->save();
+        }
+
+        return redirect()->route('items.index')->with('success', 'プロフィールを更新しました。');
     }
 
     public function updateAddress(Request $request)
