@@ -9,24 +9,19 @@ use Illuminate\Support\Facades\Auth;
 
 class RedirectIfAuthenticated
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
-     * @param  string|null  ...$guards
-     * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
-     */
     public function handle(Request $request, Closure $next, ...$guards)
     {
-        $guards = empty($guards) ? [null] : $guards;
+        //foreach ($guards as $guard) {
+        //if (Auth::guard($guard)->check()) {
 
-        foreach ($guards as $guard) {
-            if (Auth::guard($guard)->check()) {
-                return redirect(RouteServiceProvider::HOME);
-            }
-        }
+        // ✅ メール未認証の場合は verify-email ページへ
+        //if (!Auth::user()->hasVerifiedEmail()) {
+        //return redirect()->route('verification.notice');
+        //}
 
+        // ✅ 認証済みの場合はプロフィール編集画面へ
+        //return redirect()->route('mypage.profile.edit');
+        //}
         return $next($request);
     }
 }
