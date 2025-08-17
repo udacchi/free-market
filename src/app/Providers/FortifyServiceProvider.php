@@ -3,71 +3,59 @@
 namespace App\Providers;
 
 use App\Actions\Fortify\CreateNewUser;
-use App\Actions\Fortify\ResetUserPassword;
-use App\Actions\Fortify\UpdateUserPassword;
-use App\Actions\Fortify\UpdateUserProfileInformation;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Fortify\Fortify;
-
 use Laravel\Fortify\Contracts\LoginResponse;
 use Laravel\Fortify\Contracts\RegisterResponse;
 use Laravel\Fortify\Contracts\LogoutResponse;
 use App\Actions\Fortify\LogoutResponse as CustomLogoutResponse;
-use Laravel\Fortify\Contracts\VerifyEmailViewResponse;
-use App\Http\Responses\VerifyEmailViewResponse as CustomVerifyEmailViewResponse;
 
 class FortifyServiceProvider extends ServiceProvider
 {
-    /**
-     * Register application services.
-     */
     public function register(): void
     {
-        // カスタムログアウトレスポンス
         $this->app->singleton(LogoutResponse::class, CustomLogoutResponse::class);
-        $this->app->singleton(
-            VerifyEmailViewResponse::class,
-            CustomVerifyEmailViewResponse::class
-        );
     }
 
-    /**
-     * Bootstrap application services.
-     */
     public function boot(): void
     {
-        // 登録・ログインビューの指定
+        // ビュー指定
         Fortify::registerView(fn() => view('auth.register'));
         Fortify::loginView(fn() => view('auth.login'));
         Fortify::verifyEmailView(fn() => view('auth.verify-email'));
 
-        // ユーザー作成ロジック
+        // ユーザー作成
         Fortify::createUsersUsing(CreateNewUser::class);
 
         // ログインレート制限
-        RateLimiter::for('login', function (Request $request) {
-            return Limit::perMinute(10)->by($request->email . $request->ip());
-        });
+        RateLimiter::for('login', fn(Request $request) => Limit::perMinute(10)->by($request->email . $request->ip()));
 
-        // ✅ 登録後のリダイレクト先
+        // 登録後リダイレクト
         $this->app->singleton(RegisterResponse::class, function () {
             return new class implements RegisterResponse {
                 public function toResponse($request)
                 {
-                    return redirect('/mypage/profile');
+                    return redirect()->route('verification.notice'); // 登録直後はメール確認ページ
                 }
             };
         });
 
-        // ✅ ログイン後のリダイレクト先
+        // ログイン後リダイレクト
         $this->app->singleton(LoginResponse::class, function () {
-            return new class implements LoginResponse {
+            return new class implements \Laravel\Fortify\Contracts\LoginResponse {
                 public function toResponse($request)
                 {
-                    return redirect('/');
+                    // メール未認証なら verify-email へ
+                    if (!$request->user()->hasVerifiedEmail()) {
+                        return redirect()->route('verification.notice');
+                    }
+
+                    // 認証済みならプロフィール編集画面
+                    return redirect()->route('items.index');
                 }
             };
         });

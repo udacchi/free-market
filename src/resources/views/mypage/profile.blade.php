@@ -8,7 +8,7 @@
 <div class="profile-edit">
   <h2 class="profile-edit__heading content__heading">プロフィール設定</h2>
 
-  <form class="profile-edit__form" action="{{ route('mypage.profile.update') }}" method="POST" enctype="multipart/form-data">
+  <form class="profile-edit__form" action="{{ url('/mypage/profile') }}" method="POST" enctype="multipart/form-data">
     @csrf
     @method('PUT')
 
