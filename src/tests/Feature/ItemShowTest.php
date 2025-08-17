@@ -79,8 +79,8 @@ class ItemShowTest extends TestCase
         $response->assertSee('腕時計');
         $response->assertSee('ファッション');
 
-        $response->assertSee('<i class="far fa-star', false);
-        $response->assertSee('<i class="far fa-comment', false);
+        $response->assertSee('<i class="fa-regular fa-star"></i>', false);
+        $response->assertSee('<i class="far fa-comment icon"></i>', false);
         $response->assertSee('コメント(2)');
 
         $response->assertSeeTextInOrder([
@@ -89,5 +89,21 @@ class ItemShowTest extends TestCase
         ]);
         $response->assertSee('山田太郎');
         $response->assertSee('山田花子');
+    }
+
+    /** @test */
+    public function 商品詳細ページで複数選択されたカテゴリ複数選択されたカテゴリが表示される()
+    {
+        $user = User::factory()->create();
+        $item = Item::factory()->create((['user_id' => $user->id]));
+
+        $category1 = Category::create(['name' => 'ファッション']);
+        $category2 = Category::create(['name' => 'メンズ']);
+        $item->categories()->attach([$category1->id, $category2->id]);
+
+        $response = $this->get(route('items.show', $item->id));
+
+        $response->assertSeeText('ファッション');
+        $response->assertSeeText('メンズ');
     }
 }
