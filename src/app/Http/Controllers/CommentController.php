@@ -17,7 +17,7 @@ class CommentController extends Controller
         Comment::create([
             'user_id' => auth()->id(),
             'item_id' => $item->id,
-            'body' => $validated['comment'],
+            'body' => $validated['body'],
         ]);
 
         return redirect()->back()->with('success', 'コメントを投稿しました。');

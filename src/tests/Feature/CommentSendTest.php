@@ -25,8 +25,8 @@ class CommentSendTest extends TestCase
         $url = Route::has('comments.store') ? route('comments.store', $item) : "/item/{$item->id}/comments";
 
         $response = $this->post($url, [
-            'content' => 'テストコメント',
-            'comment' => 'テストコメント',
+            'body' => 'テストコメント',
+            'body' => 'テストコメント',
         ]);
 
         $response->assertRedirect();
@@ -45,8 +45,8 @@ class CommentSendTest extends TestCase
         $url = Route::has('comments.store') ? route('comments.store', $item) : "/item/{$item->id}/comments";
 
         $response = $this->post($url, [
-            'content' => 'ゲスト投稿',
-            'comment' => 'ゲスト投稿',
+            'body' => 'ゲスト投稿',
+            'body' => 'ゲスト投稿',
         ]);
 
         $response->assertRedirect();
@@ -67,8 +67,8 @@ class CommentSendTest extends TestCase
         $url  = Route::has('comments.store') ? route('comments.store', $item) : "/item/{$item->id}/comments";
 
         $response = $this->from($show)->post($url, [
-            'content' => '',
-            'comment' => '',
+            'body' => '',
+            'body' => '',
         ]);
 
         $response->assertRedirect($show);
