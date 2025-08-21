@@ -20,7 +20,7 @@
       <div class="item-card">
         <a href="{{ route('items.show', $item->id) }}" class="item-card__link">
           <div class="item-card__image-wrapper {{ $item->is_sold ? 'sold' : '' }}">
-            <img src="{{ $item->image_path }}" alt="{{ $item->name }}" class="item-card__image">
+            <img src="{{ $item->image_path }}" alt="{{ $item->name }}">
             @if($item->is_sold)
               <div class="item-card__sold-overlay">Sold</div>
             @endif

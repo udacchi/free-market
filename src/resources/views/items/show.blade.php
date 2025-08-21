@@ -9,7 +9,7 @@
   <div class="item-detail__container">
 
     <div class="item-detail__image">
-      <img src="{{ $item->image_path }}" alt="{{ $item->name }}">
+      <img src="{{ Str::startsWith($item->image_path, 'http') ? $item->image_path : asset('storage/' . $item->image_path) }}" alt="{{ $item->name }}">
     </div>
 
     <div class="item-detail__info">

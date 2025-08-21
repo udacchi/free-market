@@ -43,7 +43,7 @@ class ItemController extends Controller
                 $query->where('name', 'like', "%{$keyword}%");
             }
 
-            $items = $query->latest()->get();
+            $items = $query->orderBy('id', 'asc')->get();
         }
 
         // ← 検索値をビューで使えるように渡す（inputのvalueに利用）
