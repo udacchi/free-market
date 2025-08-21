@@ -35,7 +35,7 @@
     use Illuminate\Support\Str;
   @endphp
 
-  <div class="item__grid">
+  <div class="items__grid">
     @if ($tab === 'sell')
       @forelse($items as $item)
         <div class="item-card">
@@ -54,7 +54,7 @@
         <div class="item-card">
           <a href="{{ route('items.show', $item->id) }}">
             <img src="{{ Str::startsWith($item->image_path, 'http') ? $item->image_path : asset('storage/' . $item->image_path) }}"
-               alt="{{ $item->name }}" class="item-card__image">
+             alt="{{ $item->name }}" class="item-card__image">
             <h3 class="item-card__name">{{ $item->name }}</h3>
           </a>
         </div>
