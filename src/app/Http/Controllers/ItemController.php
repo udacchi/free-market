@@ -73,8 +73,8 @@ class ItemController extends Controller
 
     public function show(Item $item)
     {
-        $item->load(['comments.user', 'categories']);  // 既存の読み込みがあればそれでもOK
-        $item->loadCount('likes');                     // ← 件数を likes_count で使えるように
+        $item->load(['comments.user', 'categories']);
+        $item->loadCount('likes');
 
         $isLiked = auth()->check()
             ? $item->likes()->where('user_id', auth()->id())->exists()
@@ -85,7 +85,7 @@ class ItemController extends Controller
 
     public function sell()
     {
-        $categories = Category::all();
+        $categories = Category::all()->unique('name')->sortBy('id')->values();
         $selected = session('selected_categories', []);
 
         return view('items.sell', compact('categories', 'selected'));

@@ -35,13 +35,14 @@
 
       <label class="sell-form__label">カテゴリー</label>
       <div class="category-tags">
-      @foreach($categories->unique('name') as $category)
-        <input type="checkbox" name="categories[]" id="category_{{ $category->id }}" value="{{ $category->id }}" hidden
-          {{ in_array($category->id, old('categories', $selected ?? [])) ? 'checked' : '' }}>
-        <label for="category_{{ $category->id }}" class="category-tag">
-          {{ $category->name }}
-        </label>
-      @endforeach
+        @foreach($categories as $category)
+          <input type="checkbox" name="categories[]" id="category_{{ $category->id }}" value="   
+            {{ $category->id }}" hidden
+            {{ in_array($category->id, old('categories', $selected ?? [])) ? 'checked' : '' }}>
+          <label for="category_{{ $category->id }}" class="category-tag">
+            {{ $category->name }}
+          </label>
+        @endforeach
       </div>
 
       <label class="sell-form__label">商品の状態</label>
