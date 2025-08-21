@@ -8,7 +8,13 @@
 <div class="mypage-container">
   <div class="mypage-header">
     <div class="avatar-wrapper">
-      <img src="{{ Auth::user()->avatar ?? asset('images/default-avatar.png') }}" class="avatar">
+      @if (Auth::user()->avatar)
+        <img src="{{ asset('storage/' . Auth::user()->avatar) }}" class="avatar" alt="プロフィール画像">
+      @else
+        <div class="avatar-placeholder">
+          {{ Auth::user()->name }}
+        </div>
+      @endif
     </div>
     <div class="mypage-info">
       <div class="info-row">

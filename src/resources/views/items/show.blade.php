@@ -71,15 +71,21 @@
       <div class="item-detail__section">
         <h2>コメント({{ $item->comments->count() }})</h2>
         @foreach($item->comments as $comment)
-        <div class="item-comment">
-          <div class="item-comment__header">
-            <img src="{{ asset('storage/' . ($comment->user->profile_image ?? 'images/user-icon.png')) }}" class="item-comment__icon-img" >
-            <div class="item-comment__meta">
-              <div class="item-comment__user">{{ $comment->user->name }}</div>
+          <div class="item-comment">
+            <div class="item-comment__header">
+              @if ($comment->user->avatar)
+                <img src="{{ asset('storage/' . $comment->user->avatar) }}" class="item-comment__icon-img" alt="プロフィール画像">
+              @else
+                <div class="profile-edit__avatar--placeholder item-comment__icon-img">
+                  {{ $comment->user->name }}
+                </div>
+              @endif
+              <div class="item-comment__meta">
+                <div class="item-comment__user">{{ $comment->user->name }}</div>
+              </div>
             </div>
+            <div class="item-comment__text">{{ $comment->body }}</div>
           </div>
-          <div class="item-comment__text">{{ $comment->body }}</div>
-        </div>        
         @endforeach
 
         <div class="item-comment-form">

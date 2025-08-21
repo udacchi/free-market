@@ -165,6 +165,15 @@
   height: 70px;
   border-radius: 50%;
   background-color: #D9D9D9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 12px;
+  color: #FFFFFF;
+  object-fit: cover;
+  overflow: hidden;
+  text-align: center;
 }
 
 .item-comment__meta {
