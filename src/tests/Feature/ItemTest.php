@@ -31,7 +31,7 @@ class ItemTest extends TestCase
             'buyer_id' => $buyer->id,
         ]);
 
-        $response = $this->get('/');
+        $response = $this->get('/?tab=recommend');
 
         $response->assertSee('Sold');
     }
