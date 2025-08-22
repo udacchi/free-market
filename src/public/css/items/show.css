@@ -234,3 +234,109 @@
   margin-bottom: 16px;
   cursor: pointer;
 }
+
+
+/* ================================
+   items/show.css  （右端余白＋はみ出し防止）
+   ================================ */
+
+/* 調整用の変数：必要なら数値だけ変えてください */
+:root{
+  --detail-max: 1200px;                         /* ページの最大幅 */
+  --pad-x:      clamp(16px, 4vw, 28px);         /* 基本の左右余白 */
+  --pad-right-tab: clamp(24px, 6vw, 56px);      /* タブレット時に右を広めに */
+  --gap-col:    clamp(16px, 4vw, 32px);         /* 画像と情報の間隔 */
+  --img-min:    320px;                          /* 画像カラムの最小幅 */
+  --img-max:    520px;                          /* 画像カラムの最大幅 */
+}
+
+/* 外側ラッパ：中央寄せ＋左右余白（右端に確実な余白が入る） */
+.item-detail__wrapper{
+  max-width: var(--detail-max);
+  margin: 0 auto;
+  padding-inline: var(--pad-x);
+}
+
+/* 中身：左=画像 / 右=情報 の2カラム。右はみ出し禁止 */
+.item-detail__container{
+  display: grid;
+  grid-template-columns:
+    minmax(var(--img-min), clamp(340px, 42vw, var(--img-max)))
+    minmax(0, 1fr);
+  gap: var(--gap-col);
+  align-items: start;
+}
+.item-detail__container > *{ min-width: 0; }     /* ← 横スクロール根絶 */
+
+/* 画像はカラム内で100%に収める */
+.item-detail__image{ width: 100%; }
+.item-detail__image img{
+  width: 100%; height: auto; display: block; object-fit: cover; max-width: 100%;
+}
+
+/* 右側の情報は必ず折り返す */
+.item-detail__info, .item-detail__info *{
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  min-width: 0;
+}
+
+/* アイコン行：押し出さないように折り返し可 */
+.item-detail__icons{
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+}
+
+/* 購入ボタンは列幅に収める（はみ出し防止） */
+.item-detail__purchase-button{
+  display: block; width: 100%; max-width: 420px; margin: 8px 0;
+  text-align: center;
+}
+
+/* セクションや区切り線が 100vw で溢れない保険 */
+.item-detail__section, .divider, .line, .hr{ max-width: 100%; }
+
+/* コメント欄の入力も横幅にフィット */
+.item-comment-form__textarea{ width: 100%; box-sizing: border-box; }
+
+/* ---- タブレット：右余白を少し増やす（ご要望の“右端に余白”） ---- */
+@media (min-width:768px) and (max-width:1024px){
+  .item-detail__wrapper{
+    padding-inline-start: var(--pad-x);
+    padding-inline-end:   var(--pad-right-tab);
+  }
+}
+
+/* ---- 768–850px 帯は縦積みで安全（切れやすい帯域） ---- */
+@media (min-width:768px) and (max-width:850px){
+  .item-detail__container{
+    grid-template-columns: 1fr;
+    max-width: min(92vw, 820px);
+    margin-inline: auto;
+  }
+}
+
+/* ---- スマホ：縦積み＋余白控えめ ---- */
+@media (max-width:767.98px){
+  .item-detail__wrapper{ padding-inline: 16px; }
+  .item-detail__container{ grid-template-columns: 1fr; gap: 16px; }
+}
+
+/* --- テキストエリアは列幅いっぱい（保険） --- */
+.item-comment-form__textarea{
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* --- 購入ボタン＆コメント送信ボタンを textarea と同じ幅に --- */
+.item-detail__purchase-button,
+.item-comment-form__submit{
+  display: block;
+  width: 100%;
+  max-width: none;          /* 以前の 420px 制限を解除 */
+  box-sizing: border-box;   /* 余白を含めても同じ見た目幅に */
+  text-align: center;       /* 見た目を中央寄せのままに */
+}
+
+/*（任意）間隔を整える */
+.item-detail__purchase-button{ margin: 12px 0 16px; }
+.item-comment-form__submit{ margin-top: 12px; }

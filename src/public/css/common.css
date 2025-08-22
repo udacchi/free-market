@@ -1,144 +1,318 @@
-html,
-body {
-    height: 100%;
-    font-family: Inter;
+/* どの要素でもはみ出しを抑える */
+*, *::before, *::after { box-sizing: border-box; }
+
+/* flex/grid の子で横はみ出しを根絶する基本パターン */
+.header > *, .container > *, .card > *,
+.mypage-header > *, .item-detail > * {
+  min-width: 0;  /* ← これが無いと中身が膨張して崩れます */
 }
 
-.app {
-    display: flex;
-    flex-direction: column;
-    min-height: 100%;
-}
+/* 画像系の暴れを止める */
+img { max-width: 100%; height: auto; display: block; }
 
-/* ヘッダー */
+/* ===== ヘッダーの強制整形 ===== */
 .header {
-    display: grid;
-    align-items: center;
-    height: 82px;
-    padding: 0 20px;
-    background-color: #000000;
-    flex-wrap: wrap;
-
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: 1fr;
+  display: grid;
+  grid-template-columns: auto 1fr auto; /* ロゴ / 伸縮 / 右リンク */
+  gap: 12px;
+  padding: 10px 16px;
+  background: #000;
 }
-
-.header__logo {
-    min-width: 120px;
-    justify-self: start;
-    grid-column: 1;
-}
-
 .header__logo img {
-    display: block;
-    height: auto;
+  height: clamp(34px, 4vw, 44px);
 }
 
+/* 中央の検索フォームは「伸縮」「はみ出さない」 */
 .search-form {
-    display: flex;
-    align-items: center;
-    min-width: 200px;
-    border-radius: 5px;
-    background-color: #ffffff;
-    padding: 6px 6px;
-    margin-left: auto 0;
-
-    grid-column: 2;
+  display: flex;
+  align-items: center;
+  width: min(100%, 560px);
+  min-width: 0;
+  padding: 6px 10px;
+  margin: 0;                 
+  background: #FFFFFF;
+  border-radius: 6px;
+  justify-self: center;
 }
-
 .search-form__keyword-input {
-    font-size: 24px;
-    color: #000000;
-    margin-left: 30px;
+  flex: 1 1 auto;
+  min-width: 0;
+  margin-left: 10px;
+  font-size: clamp(14px, 2.2vw, 18px);
 }
 
-.search-form__keyword-input:focus {
-    outline: none;
-}
-
+/* 右側リンク群はgapだけで調整、文字は可変に */
 .header__links {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  margin: 0 30px;
-  grid-column: 3;
+  justify-content: flex-end;
+  gap: 14px;
+  margin: 0;
 }
-
-.header__link {
-  font-size: 24px;
-  color: #ffffff;
-  text-decoration: none;
-  font-weight: bold;
-}
-
+.header__link,
 .header__submit-button {
-  padding: 8px 16px;
-  background-color: #FFFFFF;
-  color: #000000;
-  font-weight: bold;
-  font-size: 24px;
+  font-size: clamp(14px, 2.2vw, 18px);
+  font-weight: 700;
   text-decoration: none;
 }
+.header__link { color: #FFFFFF; }
+.header__submit-button { background: #FFFFFF; color: #000000; padding:8px 14px; border-radius:6px; }
 
-input::placeholder {
-  color: #000000;
+
+
+/* ===== レイアウトの土台（共通） ===== */
+.container { width: min(1280px, 92vw); margin-inline: auto; }
+
+/* 一覧の崩れ防止：均等グリッド＆カードの縦積み */
+.items-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.item-card { display: flex; flex-direction: column; }
+.item-card__image { aspect-ratio: 1 / 1; overflow: hidden; border-radius: 8px; }
+.item-card__image img { width: 100%; height: 100%; object-fit: cover; }
+.item-card__title {
+  margin-top: 8px;
+  line-height: 1.4;
+  font-size: clamp(14px, 1.2vw, 16px);
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+/* タイトルを画像に重ねる指定が残っていたら無効化 */
+.item-card__title.is-overlay { position: static !important; background: none !important; }
+
+/* 商品詳細：横並びベース（固定pxを上書き） */
+.item-detail { display: flex; gap: clamp(16px, 4vw, 48px); align-items: flex-start; }
+.item-detail__image { flex: 0 0 auto; width: min(42vw, 560px); }
+.item-detail__image img { width: 100%; height: auto; aspect-ratio: 1 / 1; object-fit: cover; }
+
+/* =========================
+   タブレット安定帯 768–850px
+   ========================= */
+@media (min-width: 768px) and (max-width: 850px) {
+  /* ヘッダーは2行に分割して窮屈さ回避 */
+  .header {
+    grid-template-columns: 1fr;
+    grid-auto-rows: auto;
+    row-gap: 12px;
+  }
+  .header__logo { justify-self: start; }
+  .search-form {
+    justify-self: center;
+    width: min(92vw, 640px);  /* 伸縮しつつ中央 */
+  }
+  .header__links { justify-self: end; gap: 12px; }
+
+  /* 一覧は2列で安定 */
+  .items-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  .item-card__title { font-size: 15px; }
+
+  /* 詳細は縦積みで画像を先頭に */
+  .item-detail { flex-direction: column; gap: 24px; }
+  .item-detail__image { width: 100%; max-width: 640px; margin-inline: auto; }
+}
+
+/* ======================
+   PC安定帯 1400–1540px
+   ====================== */
+@media (min-width: 1400px) and (max-width: 1540px) {
+  .container { width: min(1280px, 88vw); }
+
+  /* 中央検索はやや広めでも崩れない */
+  .search-form { width: min(100%, 680px); }
+
+  /* 一覧は4列・やや広めのギャップで見やすく */
+  .items-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; }
+  .item-card__title { font-size: 16px; }
+
+  /* 詳細の横並びを強めに固定 */
+  .item-detail { flex-direction: row; }
+  .item-detail__image { width: 560px; }
 }
 
 
-.container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 24px;
-  justify-content: center;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
+/* タブレット: 入力欄と送信ボタンの幅を完全に一致させる */
+@media (min-width: 768px) and (max-width: 850px) {
+  :root{
+    --tab-field-w: 520px;  /* 入力欄/ボタンの横幅（好みで調整OK） */
+    --tab-input-h: 44px;
+    --tab-btn-h: 48px;
+  }
+
+  /* 入力欄 */
+  .register-form .register-form__inner form input[type="text"],
+  .register-form .register-form__inner form input[type="email"],
+  .register-form .register-form__inner form input[type="password"],
+  .login-form .login-form__inner form input[type="text"],
+  .login-form .login-form__inner form input[type="email"],
+  .login-form .login-form__inner form input[type="password"]{
+    width: var(--tab-field-w) !important;
+    height: var(--tab-input-h);
+    margin-inline: auto !important;
+    display: block !important;
+    box-sizing: border-box;
+  }
+
+  /* 送信ボタン（button / input[type=submit] / .btn を全部カバー） */
+  .register-form .register-form__inner form button[type="submit"],
+  .register-form .register-form__inner form input[type="submit"],
+  .register-form .register-form__inner form .btn,
+  .login-form .login-form__inner form button[type="submit"],
+  .login-form .login-form__inner form input[type="submit"],
+  .login-form .login-form__inner form .btn{
+    width: var(--tab-field-w) !important;   /* width:auto を打ち消す */
+    height: var(--tab-btn-h);
+    display: block !important;              /* inline/inline-block を打ち消す */
+    margin-inline: auto !important;         /* 中央寄せ */
+    align-self: center !important;          /* 左寄り対策の保険 */
+    box-sizing: border-box;
+  }
+
+  /* 親ラッパーに幅指定がある場合の保険 */
+  .register-form .register-form__inner form .form-actions,
+  .login-form .login-form__inner form .form-actions{
+    width: var(--tab-field-w) !important;
+    margin-inline: auto !important;
+  }
+
+  /* 下部リンクも同じ列幅で中央に */
+  .register-form .register-form__inner .register-form__links,
+  .login-form .login-form__inner .login-form__links{
+    width: var(--tab-field-w) !important;
+    margin-inline: auto !important;
+    text-align: center;
+  }
 }
 
-.card {
-  flex: 1 1 300px;
-  max-width: 400px;
-  min-width: 280px;
+/* ===== Auth: 中央1カラム（最小・確定版） ===== */
+.login-form, .register-form { text-align: initial; } /* 親のright継承を無効化 */
+
+.login-form__form,
+.register-form__form{
+  width: min(92vw, 560px);
+  margin: 0 auto;                 /* ← 中央寄せ */
+  padding: 0;
+  display: grid;
+  row-gap: 16px;
+}
+@media (max-width: 850px){
+  .login-form__form, .register-form__form { width: min(92vw, 520px); }
+}
+
+/* 各行（ラベル+入力）は縦積み */
+.login-form__group, .register-form__group{ display: grid; row-gap: 6px; margin: 0; }
+
+/* ラベルと入力の左端を一致させる */
+.login-form__label, .register-form__label{ margin: 0; padding: 0; text-align: left; }
+
+.login-form__input, .register-form__input,
+.login-form__form input[type="text"], .login-form__form input[type="email"], .login-form__form input[type="password"],
+.register-form__form input[type="text"], .register-form__form input[type="email"], .register-form__form input[type="password"]{
+  width: 100%;
+  height: 44px;
   box-sizing: border-box;
 }
 
-@media screen and (min-width: 1400px) and (max-width: 1540px) {
-  .container {
-    gap: 32px;
-    justify-content: space-between;
+/* 送信ボタン（button は flex / input は line-height） */
+.login-form__form button[type="submit"], .register-form__form button[type="submit"]{
+  width: 100%; height: 48px; display: flex; align-items: center; justify-content: center;
+  padding: 0; line-height: 1;
+}
+.login-form__form input[type="submit"], .register-form__form input[type="submit"]{
+  width: 100%; height: 48px; line-height: 48px; text-align: center; padding: 0;
+}
+
+/* 下部リンク中央 */
+.login-form__links, .register-form__links{ text-align: center; }
+
+
+/* ===== タブレット用：768–1023px は 3 等分で横並び ===== */
+@media (min-width:768px) and (max-width:1023.98px){
+  .header{
+    display:grid;
+    grid-template-columns: 1fr 1fr auto; /* 3等分 */
+    align-items:center;                 /* 縦位置そろえ */
+    column-gap:16px;
+  }
+  .header > *{ min-width:0; }           /* はみ出し防止 */
+
+  .header__logo{ justify-self:start; }
+  .header__logo img{ max-width:100%; height:auto; }
+
+  .header__search{ justify-self:stretch; } /* 中央列は幅いっぱい */
+  .header__search .search-form{ width:100%; }
+  .header__search .search-form__keyword-input{
+    width:100%; height:40px; display:block;
   }
 
-  .card {
-    flex: 0 0 30%;
-    max-width: 30%;
+  .header__links{
+    justify-self:end;
+    display:flex;
+    align-items:center;
+    gap:14px;                 /* ログアウト／マイページ／出品の間隔 */
+    white-space:nowrap;       /* 改行させない */
+  }
+  .header__submit-button{
+    padding:8px 14px;
+    border-radius:8px;
+    display:inline-block;
   }
 }
 
-@media screen and (min-width: 768px) and (max-width: 850px) {
-  .container {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .card {
-    width: 90%;
-    max-width: 500px;
-  }
+/* 参考：モバイルは縦積みのままでOKにする場合 */
+@media (max-width:767.98px){
+  .header{ display:flex; flex-direction:column; gap:10px; }
+  .header__search .search-form__keyword-input{ width:100%; }
 }
 
-img {
-  width: 100%;
-  height: auto;
-  display: block;
+
+/* === 商品カード：写真と商品名を強制的に分離（重なり防止） === */
+.items__grid .item-card__link{
+  display: grid !important;
+  grid-template-rows: auto auto !important;   /* 1行目=画像 / 2行目=商品名 */
+  align-content: start !important;
+  gap: 8px !important;
+  min-width: 0 !important;
 }
 
-.card h3 {
-  font-size: 1.2rem;
+/* 画像ブロックは1行目。中だけで完結させる */
+.items__grid .item-card__image-wrapper{
+  grid-row: 1 !important;
+  position: relative !important;
+  overflow: hidden !important;
+  aspect-ratio: 1 / 1 !important;             /* サイズは今のままでもOK */
+  margin: 0 !important;
+}
+.items__grid .item-card__image-wrapper img{
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  display: block !important;
 }
 
-@media screen and (max-width: 850px) {
-  .card h3 {
-    font-size: 1rem;
-  }
+/* SOLD バッジは“画像の中だけ”に */
+.items__grid .item-card__sold-overlay{
+  position: absolute !important;
+  left: 50% !important; top: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  z-index: 2 !important;
+  pointer-events: none !important;
 }
 
+/* 商品名は2行目。前面＆通常フローに固定して絶対に見えるように */
+.items__grid .item-card__name{
+  grid-row: 2 !important;
+  position: relative !important;              /* absolute の打ち消し */
+  z-index: 1 !important;
+  margin: 0 !important;                       /* 負のマージン対策 */
+  line-height: 1.4 !important;
+  min-height: calc(1.4em * 2) !important;     /* 2行ぶん確保（段ズレ防止） */
+  display: -webkit-box !important;
+  -webkit-box-orient: vertical !important;
+  -webkit-line-clamp: 2 !important;           /* 長文は2行で省略 */
+  overflow: hidden !important;
+  white-space: normal !important;
+  word-break: break-word !important;
+  overflow-wrap: anywhere !important;
+}
+
+/* 画像ラッパに .sold が付いていても外へはみ出させない保険 */
+.items__grid .item-card__image-wrapper.sold{
+  position: relative !important; inset: auto !important; transform: none !important;
+}

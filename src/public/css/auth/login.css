@@ -9,7 +9,7 @@
 /* フォーム全体のボックス */
 .login-form__inner {
   width: 680px;
-  height: 656px;
+  height: 850px;
   border: none;
   box-sizing: border-box;
 }
@@ -46,7 +46,7 @@
 
 /* エラーメッセージ */
 .login-form__error-message {
-  color: red;
+  color: #FF0000;
   font-size: 12px;
   margin-top: 4px;
 }
@@ -85,21 +85,4 @@
   text-decoration: underline;
 }
 
-/* レスポンシブ対応 */
-@media screen and (max-width: 1200px) {
-  .login-form__form {
-    width: 60vw;
-  }
-}
 
-.login-form__error-message {
-  color: red;
-  font-size: 14px;
-  margin-top: 4px;
-}
-
-.login-form__error-message {
-  color: #FF5555;
-  font-size: 14px;
-  margin-top: 4px;
-}

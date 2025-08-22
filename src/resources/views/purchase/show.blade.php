@@ -5,7 +5,10 @@
 @endsection
 
 @section('content')
-<form action="{{ route('purchase.store', $item->id) }}" method="POST">
+<form id="purchase-form"
+      action="{{ route('purchase.store', ['item' => $item->id]) }}"
+      method="POST"
+      novalidate>
   @csrf
 
   <div class="purchase__wrapper">
@@ -65,7 +68,12 @@
           <tr><td>支払い方法</td><td id="selected-payment">未選択</td></tr>
         </table>
       </div>
-      <button type="submit" class="purchase-button">購入する</button>
+      <button type="submit"
+          class="purchase-button"
+          form="purchase-form"
+          formaction="{{ route('purchase.store', ['item' => $item->id]) }}">
+          購入する
+      </button>
     </div>
 
   </div> <!-- /.purchase__wrapper -->

@@ -179,3 +179,116 @@
   border-radius: 5px;
   cursor: pointer;
 }
+
+
+/* =========================================================
+   purchase/show.css
+   - 右切れ防止（min-width:0 / max-width:100%）
+   - 左=可変／右=上限付き（固定幅をやめる）
+   - iPad(768–1024px) は縦積みで安全
+   ========================================================= */
+
+/* 調整用：数値だけ変えれば全体のバランス調整ができます */
+:root{
+  --wrap-max: 1280px;                    /* 全体の最大幅 */
+  --pad-x:    16px;                      /* 左右の内側余白 */
+  --gap-col:  clamp(16px, 3vw, 32px);    /* 左右カラム間隔 */
+  --right-max: min(380px, 40vw);         /* 右カラムの上限幅 */
+  --thumb:    clamp(96px, 18vw, 160px);  /* 左上のサムネサイズ */
+}
+
+/* ラッパー：中央寄せ＋横並び */
+.purchase__wrapper{
+  display: flex;
+  align-items: flex-start;
+  gap: var(--gap-col);
+  max-width: var(--wrap-max);
+  margin: 0 auto;
+  padding-inline: var(--pad-x);
+}
+/* 子要素が横に膨らんで親を押し広げないように */
+.purchase__wrapper > *{ min-width: 0; }
+
+/* 左カラム：可変 */
+.purchase-left__container{ flex: 1 1 auto; min-width: 0; }
+
+/* 右カラム：上限だけ与えて収める（固定幅はNG） */
+.purchase-right__container{
+  flex: 0 1 var(--right-max);
+  width: 100%;
+  align-self: flex-start;
+  min-width: 0;
+}
+/* 右カラム内部の固定幅で溢れないよう保険 */
+.purchase-right__container *,
+.purchase-summary *{ max-width: 100%; }
+
+/* 商品行（左上）：画像＋名前・価格を横並び */
+.item-detail__row{
+  display: grid;
+  grid-template-columns: var(--thumb) 1fr;
+  gap: 12px;
+  align-items: start;
+}
+.item-detail__image{ width: var(--thumb); }
+.item-detail__image img{
+  width: 100%; height: auto; display: block; object-fit: cover;
+}
+.item-detail__info{ min-width: 0; overflow-wrap: anywhere; }
+
+/* 支払い方法 */
+.payment-method label{ display:block; font-weight:700; margin: 12px 0 6px; }
+.custom-select-wrapper select{ width: min(100%, 280px); }
+
+/* 配送先 */
+.delivery-address{ margin-top: 12px; }
+.delivery-address__header{
+  display:flex; justify-content: space-between; align-items:center; gap:12px;
+}
+.delivery-address, .delivery-address *{
+  overflow-wrap: anywhere; word-break: break-word;
+}
+
+/* サマリー表 */
+.purchase-summary table{ width:100%; border-collapse: collapse; }
+.purchase-summary td{ padding: 8px 0; }
+
+/* 購入ボタンは列幅いっぱい（はみ出し防止） */
+.purchase-button{
+  display:block; width:100%; box-sizing:border-box;
+  margin-top: 60px; text-align:center;
+  white-space: normal;
+}
+
+/* 区切り線などの溢れ防止 */
+.section-divider, .divider, .hr, .line{ width:100%; max-width:100%; }
+
+/* ====== iPad帯(768–1024px)：縦積みで安全 ====== */
+@media (min-width:768px) and (max-width:1024px){
+  .purchase__wrapper{
+    flex-direction: column;
+    max-width: min(92vw, 820px);   /* 右端に余白を確保しつつ中央寄せ */
+  }
+  .purchase-right__container{ flex-basis:auto; width:100%; }
+}
+
+/* ====== スマホ：縦積み＋余白控えめ ====== */
+@media (max-width:767.98px){
+  .purchase__wrapper{ flex-direction: column; gap: 16px; }
+}
+
+/* ===== PC：サマリー表を広くする ===== */
+@media (min-width:1025px){
+  /* 右カラムの上限幅を引き上げ（表ごと広がる） */
+  :root{
+    --right-max: clamp(520px, 36vw, 640px);  /* ←好みで 560/600 などに */
+    --wrap-max: 1360px;                      /* 任意：全体も少し広く */
+  }
+  .purchase-right__container{ flex: 0 1 var(--right-max); }
+
+  /* 表自体は列幅いっぱいに */
+  .purchase-summary{ width: 100%; }
+  .purchase-summary table{ width: 100%; table-layout: auto; }
+  .purchase-summary td:first-child{ width: 50%; }  /* ラベル側に余裕 */
+  .purchase-summary td:last-child{ text-align: center; }
+}
