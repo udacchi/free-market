@@ -33,7 +33,7 @@ class ExhibitionRequest extends FormRequest
             'name'            => ['required', 'string'],
             'brand'           => ['nullable', 'string', 'max:100'],
             'description'     => ['required', 'string', 'max:255'],
-            'price'           => ['required', 'integer', 'min:0'],
+            'price'           => ['required', 'integer', 'min:1'],
         ];
     }
 
@@ -54,7 +54,7 @@ class ExhibitionRequest extends FormRequest
             'description.max'        => '商品の説明は255文字以内で入力してください。',
             'price.required'         => '価格を入力してください。',
             'price.integer'          => '価格は数値で入力してください。',
-            'price.min'              => '価格は0円以上で入力してください。',
+            'price.min'              => '価格は1円以上で入力してください。',
         ];
     }
 
