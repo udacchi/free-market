@@ -94,7 +94,7 @@
             <label for="comment-body" class="item-comment-form__label">商品へのコメント</label>
             <textarea name="body" id="comment-body" class="item-comment-form__textarea" rows="4">{{ old('body') }}</textarea>
             @error('body')
-              <div class="item-comment-form__error">{{ $message }}</div>
+              <p class="item-comment-form__error-message">{{ $message }}</p>
             @enderror
             <button type="submit" class="item-comment-form__submit">コメントを送信する</button>
           </form>

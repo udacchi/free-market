@@ -47,7 +47,7 @@
 /* エラーメッセージ */
 .login-form__error-message {
   color: #FF0000;
-  font-size: 12px;
+  font-size: 14px;
   margin-top: 4px;
 }
 
